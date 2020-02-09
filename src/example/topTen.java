@@ -1,4 +1,4 @@
-package question2;
+package example;
 
 import java.io.IOException;
 import java.util.HashSet;
