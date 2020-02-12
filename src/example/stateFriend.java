@@ -1,4 +1,4 @@
-package question3;
+package example;
 
 import java.io.BufferedReader;
 import java.io.IOException;
