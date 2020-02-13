@@ -157,8 +157,8 @@ public class topTen {
 
         // uncomment the following line to add the Combiner job.setCombinerClass(Reduce.class);
 
-        // set output key type
-        job2.setOutputKeyClass(IntWritable.class);
+        // set output key type for mapper
+		job2.setOutputKeyClass(IntWritable.class);
         // set output value type
         job2.setOutputValueClass(Text.class);
         //set the HDFS path of the input data

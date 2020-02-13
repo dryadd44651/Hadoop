@@ -21,6 +21,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
+import p1.commonFriend;
 
 public class stateFriend {
 	
@@ -49,83 +50,95 @@ public class stateFriend {
             		for(String friend: friends) {
             			if(!set.add(friend)) {
             				sb.append(friend);
-            				sb.append(",");
-            			}
-            		}
+                            sb.append(",");
+                        }
+                    }
             }
             if(sb.length() > 0) {
-            		sb.deleteCharAt(sb.length()-1);
-            		context.write(key, new Text(sb.toString()));
+                    sb.deleteCharAt(sb.length()-1);
+                    context.write(key, new Text(sb.toString()));
             }
         }
     }
-    
+
     public static class State extends Mapper<LongWritable, Text, Text, Text>{
-    	
-    		HashMap<Integer, String> stateMap = new HashMap<>();
-    		
-    		protected void setup(Context context) throws IOException, InterruptedException {
-    			Configuration conf = context.getConfiguration();
-    			Path part = new Path(context.getConfiguration().get("textPath"));// Location of file in HDFS
-    			FileSystem fs = FileSystem.get(conf);
-    			FileStatus[] fss = fs.listStatus(part);
-    			for (FileStatus status : fss) {
-    				Path pt = status.getPath();
-    				BufferedReader br = new BufferedReader(new InputStreamReader(fs.open(pt)));
-    				String userinfo;
-    				userinfo = br.readLine();
-    				while (userinfo != null) {
-    					String[] arr = userinfo.split(",");
-    					// Put (user#, (name:state)) in the HashMap variable
-    					stateMap.put(Integer.parseInt(arr[0]), arr[1]+":"+arr[5]);
-    					userinfo = br.readLine();
-    				}
-    			}    			
-    		}
-    		
-    		public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {                       
-                String[] data = value.toString().split("\t");                              
-                String[] friends = data[1].split(",");
-                StringBuilder sb = new StringBuilder();
-                sb.append("[");
-                for(String friend : friends) {
-                		sb.append(stateMap.get(Integer.parseInt(friend)));
-                		sb.append(", ");                                     
-                }	            
-                sb.delete(sb.length()-2, sb.length());
-                sb.append("]");
-                context.write(new Text(data[0]), new Text(sb.toString()));
+
+        HashMap<Integer, String> stateMap = new HashMap<>();
+
+        protected void setup(Context context) throws IOException, InterruptedException {
+            Configuration conf = context.getConfiguration();
+            Path part = new Path(context.getConfiguration().get("textPath"));// Location of file in HDFS
+            FileSystem fs = FileSystem.get(conf);
+            FileStatus[] fss = fs.listStatus(part);
+            for (FileStatus status : fss) {
+            Path pt = status.getPath();
+            BufferedReader br = new BufferedReader(new InputStreamReader(fs.open(pt)));
+            String userinfo;
+            userinfo = br.readLine();
+
+            while (userinfo != null) {
+                    String[] arr = userinfo.split(",");
+
+                    // Put (user#, (name:state)) in the HashMap variable
+                    stateMap.put(Integer.parseInt(arr[0]), arr[1]+":"+arr[5]);
+                    userinfo = br.readLine();
+                    }
+            }
+        }
+
+        public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
+            String[] data = value.toString().split("\t");
+            String[] friends = data[1].split(",");
+            StringBuilder sb = new StringBuilder();
+            sb.append("[");
+            for(String friend : friends) {
+                sb.append(stateMap.get(Integer.parseInt(friend)));
+                sb.append(", ");
+            }
+            sb.delete(sb.length()-2, sb.length());
+            sb.append("]");
+            context.write(new Text(data[0]), new Text(sb.toString()));
         }
     }
 	
 	
 	public static void main(String[] args) throws Exception {
+        p1.commonFriend cf = new commonFriend();
+        //System.out.print(cf.main(args));
+        //cf.clearFolder("cf");
+        cf.clearFolder("sf");
+
         Configuration conf = new Configuration();
         String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
         // get all args
         if (otherArgs.length != 4) {
             System.err.println("Usage: stateFriend <in> <tmp> <text.file> <out>");
-            System.exit(2);
+            otherArgs = new String[4];
+            otherArgs[0] = "./input/soc-LiveJournal1Adj.txt";
+            otherArgs[1] = "./cf/";
+            otherArgs[2] = "./sf/";
+            otherArgs[3] = "./input/userdata.txt";
+            //System.exit(2);
         }
         conf.set("textPath", otherArgs[3]);
         // create a job with name "commonFriend"
-        Job job1 = Job.getInstance(conf, "stateFriend");
-        job1.setJarByClass(stateFriend.class);
-        job1.setMapperClass(Map.class);
-        job1.setReducerClass(Reduce.class);
-
-        // uncomment the following line to add the Combiner job.setCombinerClass(Reduce.class);
-
-        // set output key type
-        job1.setOutputKeyClass(Text.class);
-        // set output value type
-        job1.setOutputValueClass(Text.class);
-        //set the HDFS path of the input data
-        FileInputFormat.addInputPath(job1, new Path(otherArgs[0]));
-        // set the HDFS path for the output
-        FileOutputFormat.setOutputPath(job1, new Path(otherArgs[1]));
-        //Wait till job completion
-        job1.waitForCompletion(true);
+//        Job job1 = Job.getInstance(conf, "stateFriend");
+//        job1.setJarByClass(stateFriend.class);
+//        job1.setMapperClass(Map.class);
+//        job1.setReducerClass(Reduce.class);
+//
+//        // uncomment the following line to add the Combiner job.setCombinerClass(Reduce.class);
+//
+//        // set output key type
+//        job1.setOutputKeyClass(Text.class);
+//        // set output value type
+//        job1.setOutputValueClass(Text.class);
+//        //set the HDFS path of the input data
+//        FileInputFormat.addInputPath(job1, new Path(otherArgs[0]));
+//        // set the HDFS path for the output
+//        FileOutputFormat.setOutputPath(job1, new Path(otherArgs[1]));
+//        //Wait till job completion
+//        job1.waitForCompletion(true);
         
         Job job2 = Job.getInstance(conf, "stateFriend");
         job2.setJarByClass(stateFriend.class);
@@ -136,7 +149,7 @@ public class stateFriend {
         job2.setMapOutputKeyClass(Text.class);
         job2.setMapOutputValueClass(Text.class);
         
-        FileInputFormat.addInputPath(job2, new Path(otherArgs[1]));
+        FileInputFormat.addInputPath(job2, new Path(otherArgs[1]+"part-r-00000"));
         FileOutputFormat.setOutputPath(job2, new Path(otherArgs[2]));
         
         

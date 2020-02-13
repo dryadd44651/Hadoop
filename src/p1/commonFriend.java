@@ -80,8 +80,8 @@ public class commonFriend {
 
     }
     // Driver program
-    public static void main(String[] args) throws Exception {
-        clearFolder("output");
+    public static int main(String[] args) throws Exception {
+        clearFolder("cf");
         Configuration conf = new Configuration();
         String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
         // get all args
@@ -89,13 +89,13 @@ public class commonFriend {
             System.err.println("Usage: WordCount <in> <out>");
             otherArgs = new String[2];
             otherArgs[0] = "./input/soc-LiveJournal1Adj.txt";
-            otherArgs[1] = "./output";
+            otherArgs[1] = "./cf";
             //System.exit(2);
 
         }
 
-        // create a job with name "wordcount"
-        Job job = new Job(conf, "wordcount");
+        // create a job with name "commonFriend"
+        Job job = new Job(conf, "commonFriend");
         job.setJarByClass(commonFriend.class);
         job.setMapperClass(commonFriend.Map.class);
         job.setReducerClass(commonFriend.Reduce.class);
@@ -113,7 +113,7 @@ public class commonFriend {
         // set the HDFS path for the output
         FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
         //Wait till job completion
-        System.exit(job.waitForCompletion(true) ? 0 : 1);
+        return  (job.waitForCompletion(true) ? 0 : 1);
     }
 
 
