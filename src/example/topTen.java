@@ -63,24 +63,37 @@ public class topTen {
     // Job2 - map, reducer, sorter
 	
     public static class Reverse extends Mapper<LongWritable, Text, IntWritable, Text>{
+		private static int count1 =0;
         public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {    
             String[] data = value.toString().split("\t");     
             String[] friends = data[1].split(",");
             IntWritable count = new IntWritable();
             count.set(friends.length);
-            context.write(count, new Text(data[0] + "@" + data[1])); // create a pair <user friend, friends>                
+            context.write(count, new Text(data[0] + "@" + data[1])); // create a pair <user friend, friends>
+			//System.out.println(count+" "+data[0] + "@" + data[1]);
+			System.out.println(count1);
+			count1++;
         }
     }
 
     public static class getTen extends Reducer<IntWritable,Text,Text,Text> {
     		private static int count =10;
 	    	public void reduce(IntWritable key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
-	            Iterator<Text> it = values.iterator();
-	            while(count > 0) {
-	            		String[] pair = it.next().toString().split("@");
+
+				//key: friend number values: all the pairs in this number of friends
+	    		Iterator<Text> it = values.iterator();
+				Text text = it.next();
+				//System.out.println(key+" "+text);
+
+	            while(count > 0 && it.hasNext()) {
+	            		//if(it.hasNext())
+ 						text =  it.next();
+						System.out.println(key+" "+text);
+	            		String[] pair = text.toString().split("@");
 	            		String newKey = pair[0].toString();
 	            		context.write(new Text(newKey), new Text(key.get() + "\t" + pair[1].toString()));
 	            		count--;
+
 	            }
         }
     }
@@ -95,9 +108,11 @@ public class topTen {
 		@Override
 		public int compare(WritableComparable w1, WritableComparable w2) {
 			IntWritable key1 = (IntWritable) w1;
-			IntWritable key2 = (IntWritable) w2;          
+			IntWritable key2 = (IntWritable) w2;
+
 			return -1 * key1.compareTo(key2);
 		}
+
 	}
 	
    
