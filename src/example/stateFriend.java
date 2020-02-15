@@ -104,10 +104,9 @@ public class stateFriend {
 	
 	public static void main(String[] args) throws Exception {
         p1.commonFriend cf = new commonFriend();
-        //System.out.print(cf.main(args));
-        //cf.clearFolder("cf");
+        cf.clearFolder("cf");
         cf.clearFolder("sf");
-
+        System.out.print(cf.main(args));
         Configuration conf = new Configuration();
         String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
         // get all args

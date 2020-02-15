@@ -1,6 +1,7 @@
 package example;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
@@ -46,7 +47,7 @@ public class avgAge {
 	// Job1
     public static class Map extends Mapper<LongWritable, Text, Text, Text>{
     		
-    		HashMap<Integer, String> ageMap = new HashMap<>();
+        HashMap<Integer, String> ageMap = new HashMap<>();
 		
 		protected void setup(Context context) throws IOException, InterruptedException {
 			Configuration conf = context.getConfiguration();
@@ -75,7 +76,7 @@ public class avgAge {
             String[] friends = data[1].split(",");
             StringBuilder sb = new StringBuilder();
             for(String friend : friends) {
-            		sb.append(2019-Integer.parseInt(ageMap.get(Integer.parseInt(friend)))); 
+            		sb.append(2020-Integer.parseInt(ageMap.get(Integer.parseInt(friend))));
             		sb.append(",");
             }
             sb.deleteCharAt(sb.length()-1);
@@ -86,7 +87,7 @@ public class avgAge {
     public static class Reduce extends Reducer<Text,Text,Text,DoubleWritable> {       
         public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
             
-        		double sum = 0.0; // initialize the sum for each keyword
+            double sum = 0.0; // initialize the sum for each keyword
             Iterator<Text> it = values.iterator();
             String[] ages = it.next().toString().split(",");
             for(String age: ages) {
@@ -126,7 +127,7 @@ public class avgAge {
 		
 	    	public void reduce(DoubleWritable key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
 	            Iterator<Text> it = values.iterator();
-	            while(count > 0) {
+	            while(count > 0 && it.hasNext()) {
 	            		StringBuilder sb = new StringBuilder();
 	            		sb.append(key.get());
 	            		context.write(new Text(it.next().toString()), new Text(sb.toString()));
@@ -174,14 +175,35 @@ public class avgAge {
             context.write(new Text(data[0]), new Text(sb.toString()));
     }
 }
-	
+    public static void clearFolder(String path){
+        File file = new File("./"+path);
+
+        File[] listFiles = file.listFiles();
+        if(file.isDirectory() == true) {
+            for (File f : listFiles) {
+                System.out.println("Deleting " + f.getName());
+                f.delete();
+            }
+            file.delete();
+        }
+
+    }
 	public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
         String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
+        clearFolder("aa");
+        clearFolder("aa_top15");
+        clearFolder("aa_top15_user");
         // get all args
         if (otherArgs.length != 5) {
             System.err.println("Usage: avgAge <in> <tmp> <tmp2> <out> <text.file>");
-            System.exit(2);
+            otherArgs = new String[5];
+            otherArgs[0] = "./input/soc-LiveJournal1Adj.txt";
+            otherArgs[1] = "./aa/";
+            otherArgs[2] = "./aa_top15/";
+            otherArgs[3] = "./aa_top15_user/";
+            otherArgs[4] = "./input/userdata.txt";
+            //System.exit(2);
         }
         conf.set("textPath", otherArgs[4]);
         // create a job with name "commonFriend"
@@ -220,7 +242,7 @@ public class avgAge {
         job2.setOutputKeyClass(Text.class);
         job2.setOutputValueClass(Text.class);
         
-        FileInputFormat.addInputPath(job2, new Path(otherArgs[1]));
+        FileInputFormat.addInputPath(job2, new Path(otherArgs[1]+"part-r-00000"));
         FileOutputFormat.setOutputPath(job2, new Path(otherArgs[2]));
         
         job2.waitForCompletion(true);
@@ -234,7 +256,7 @@ public class avgAge {
         job3.setMapOutputKeyClass(Text.class);
         job3.setMapOutputValueClass(Text.class);
         
-        FileInputFormat.addInputPath(job3, new Path(otherArgs[2]));
+        FileInputFormat.addInputPath(job3, new Path(otherArgs[2]+"part-r-00000"));
         FileOutputFormat.setOutputPath(job3, new Path(otherArgs[3]));
         
         

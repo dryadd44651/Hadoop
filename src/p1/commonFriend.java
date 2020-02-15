@@ -77,7 +77,6 @@ public class commonFriend {
             }
             file.delete();
         }
-
     }
     // Driver program
     public static int main(String[] args) throws Exception {
