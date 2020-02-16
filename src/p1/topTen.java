@@ -61,7 +61,7 @@ public class topTen {
 
     public static void main(String[] args) throws Exception {
         commonFriend cf = new commonFriend();
-        System.out.print(cf.main(args));
+        System.out.print(cf.run(args));
         cf.clearFolder("cf");
         cf.clearFolder("tt");
         Configuration conf = new Configuration();

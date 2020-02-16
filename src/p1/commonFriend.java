@@ -30,7 +30,8 @@ public class commonFriend {
         public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             String[] token = value.toString().split("\t");
             String[] pair = new String[2];
-            String[] data = token[1].toString().split(",");
+            if(token.length < 2) return;
+            String[] data = token[1].split(",");
 
             for (String d : data) {
                 pair[0] = token[0];
@@ -79,7 +80,7 @@ public class commonFriend {
         }
     }
     // Driver program
-    public static int main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         clearFolder("cf");
         Configuration conf = new Configuration();
         String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
@@ -112,8 +113,17 @@ public class commonFriend {
         // set the HDFS path for the output
         FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
         //Wait till job completion
-        return  (job.waitForCompletion(true) ? 0 : 1);
+        int result = (job.waitForCompletion(true) ? 0 : 1);
     }
+    public int run(String[] args) {
+        try {
+            main(args);
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
 
+    }
 
 }

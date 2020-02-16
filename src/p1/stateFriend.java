@@ -61,7 +61,7 @@ public class stateFriend {
         commonFriend cf = new commonFriend();
         cf.clearFolder("cf");
         cf.clearFolder("sf");
-        System.out.print(cf.main(args));
+        System.out.print(cf.run(args));
         Configuration conf = new Configuration();
         String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
         // get all args

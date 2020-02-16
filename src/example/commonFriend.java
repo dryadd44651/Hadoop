@@ -74,13 +74,17 @@ public class commonFriend {
     }
     // Driver program
     public static void main(String[] args) throws Exception {
-        clearFolder("output");
+        clearFolder("cf");
         Configuration conf = new Configuration();
         String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
         // get all args
         if (otherArgs.length != 2) {
-            System.err.println("Usage: commonFriend <in> <out>");
-            System.exit(2);
+            System.err.println("Usage: WordCount <in> <out>");
+            otherArgs = new String[2];
+            otherArgs[0] = "./input/soc-LiveJournal1Adj.txt";
+            otherArgs[1] = "./cf";
+            //System.exit(2);
+
         }
 
         // create a job with name "commonFriend"
