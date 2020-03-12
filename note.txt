@@ -1,0 +1,13 @@
+run the hadoop (sbin/start-all.cmd)
+
+creat input folder
+hadoop fs -mkdir /input
+
+chech in 
+http://localhost:50070/explorer.html#/input
+
+upload file
+hadoop dfs -put userdata.txt /input
+
+delete folder
+hdfs dfs -rm -R /user/russkin/output

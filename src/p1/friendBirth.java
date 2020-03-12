@@ -18,7 +18,7 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class stateFriend {
+public class friendBirth {
     public static class Map extends Mapper<LongWritable, Text, Text, Text> {
         HashMap<Integer, String> stateMap = new HashMap<>();
 
@@ -37,7 +37,7 @@ public class stateFriend {
                     String[] arr = userinfo.split(",");
 
                     // Put (user#, (name:state)) in the HashMap variable
-                    stateMap.put(Integer.parseInt(arr[0]), arr[1]+":"+arr[5]);//key: number, value: name:state
+                    stateMap.put(Integer.parseInt(arr[0]), arr[1]+":"+arr[9]);//key: number, value: name:state
                     userinfo = br.readLine();
                 }
             }
@@ -60,7 +60,7 @@ public class stateFriend {
     public static void main(String[] args) throws Exception {
         commonFriend cf = new commonFriend();
         cf.clearFolder("cf");
-        cf.clearFolder("sf");
+        cf.clearFolder("fb");
         System.out.print(cf.run(args));
         Configuration conf = new Configuration();
         String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
@@ -69,13 +69,13 @@ public class stateFriend {
             System.err.println("Usage: stateFriend <in> <tmp> <text.file> <out>");
             otherArgs = new String[3];
             otherArgs[0] = "./cf/part-r-00000";
-            otherArgs[1] = "./sf/";
+            otherArgs[1] = "./fb/";
             otherArgs[2] = "./input/userdata.txt";
             //System.exit(2);
         }
         conf.set("textPath", otherArgs[2]);
         Job job = new Job(conf, "topTen");
-        job.setJarByClass(stateFriend.class);
+        job.setJarByClass(friendBirth.class);
         job.setMapperClass(Map.class);
 
         // uncomment the following line to add the Combiner job.setCombinerClass(Reduce.class);
