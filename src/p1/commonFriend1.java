@@ -19,7 +19,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class commonFriend {
+public class commonFriend1 {
     public static class Map extends Mapper<LongWritable, Text, Text, Text> {
         //input type: LongWritable, Text
         //output type: Text, Text
@@ -34,12 +34,22 @@ public class commonFriend {
             String[] data = token[1].split(",");
 
             for (String d : data) {
+
                 pair[0] = token[0];
                 pair[1] = d;
-                Arrays.sort(pair);//get unique key (1,0),(0,1) => (0,1)
-                keyPair.set("<"+pair[0]+","+pair[1]+">");
+                //Arrays.sort(pair);//get unique key (1,0),(0,1) => (0,1)
+                if(Integer.parseInt(pair[0])<Integer.parseInt(pair[1]))
+                    keyPair.set("<"+pair[0]+","+pair[1]+">");
+                else
+                    keyPair.set("<"+pair[1]+","+pair[0]+">");
                 friend.set(token[1]); // set word as each input keyword
-                context.write(keyPair, friend); // create a pair <keyword, 1>
+                if(keyPair.toString().compareTo("<0,1>")==0 || keyPair.toString().compareTo("<20,28193>")==0 || keyPair.toString().compareTo("<1,29826>")==0 ||
+                        keyPair.toString().compareTo("<6222,19272>")==0 || keyPair.toString().compareTo("<28041,28056>")==0 ){
+                    context.write(keyPair, friend); // create a pair <keyword, 1>
+                    //System.out.println(keyPair);
+                }
+
+
             }
         }
     }
@@ -50,6 +60,9 @@ public class commonFriend {
             StringBuilder sb = new StringBuilder();
             Iterator<Text> it = values.iterator();
             //System.out.println(key);
+
+//            if(key.toString().compareTo("<0,1>")==0)
+//                System.out.println(key);
             for (Text val : values) {
                 //System.out.println(val);
                 String[] token = val.toString().split(",");
@@ -63,7 +76,8 @@ public class commonFriend {
                 sb.deleteCharAt(sb.length()-1);//delete last ","
                 context.write(key, new Text(sb.toString()));
             }
-
+            else
+                context.write(key, new Text(sb.toString()));
         }
     }
 
@@ -96,9 +110,9 @@ public class commonFriend {
 
         // create a job with name "commonFriend"
         Job job = new Job(conf, "commonFriend");
-        job.setJarByClass(commonFriend.class);
-        job.setMapperClass(commonFriend.Map.class);
-        job.setReducerClass(commonFriend.Reduce.class);
+        job.setJarByClass(commonFriend1.class);
+        job.setMapperClass(Map.class);
+        job.setReducerClass(Reduce.class);
 
 
         // uncomment the following line to add the Combiner job.setCombinerClass(Reduce.class);

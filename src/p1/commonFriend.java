@@ -36,8 +36,11 @@ public class commonFriend {
             for (String d : data) {
                 pair[0] = token[0];
                 pair[1] = d;
-                Arrays.sort(pair);//get unique key (1,0),(0,1) => (0,1)
-                keyPair.set("<"+pair[0]+","+pair[1]+">");
+                if(Integer.parseInt(pair[0])<Integer.parseInt(pair[1]))
+                    keyPair.set("<"+pair[0]+","+pair[1]+">");
+                else
+                    keyPair.set("<"+pair[1]+","+pair[0]+">");
+
                 friend.set(token[1]); // set word as each input keyword
                 context.write(keyPair, friend); // create a pair <keyword, 1>
             }

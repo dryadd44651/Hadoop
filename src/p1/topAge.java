@@ -95,6 +95,7 @@ public class topAge {
 
         }
     }
+
     //===
     public static class friendMap extends Mapper<LongWritable, Text, Text,Text> {
         public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
@@ -124,7 +125,7 @@ public class topAge {
             int i = 0;
             while (it.hasNext()){
                 data[i] = it.next().toString();
-                System.out.println(data[i]);
+                //System.out.println(data[i]);
                 i++;
             }
 
@@ -139,13 +140,13 @@ public class topAge {
 
         }
     }
-    public static class petitioner extends Partitioner<Text,Text> {
-        public int getPartition(Text key, Text value, int numReduceTasks){
-            String[] data = key.toString().split(",");
-            System.out.println(data[0]);
-            return Integer.parseInt(data[0])% numReduceTasks;
-        }
-    }
+//    public static class petitioner extends Partitioner<Text,Text> {
+//        public int getPartition(Text key, Text value, int numReduceTasks){
+//            String[] data = key.toString().split(",");
+//            System.out.println(data[0]);
+//            return Integer.parseInt(data[0])% numReduceTasks;
+//        }
+//    }
 
 
 
@@ -189,7 +190,7 @@ public class topAge {
         job.setMapOutputKeyClass(Text.class);
         job.setMapOutputValueClass(Text.class);
         //job.setSortComparatorClass(maxUser.DescendingDoubleComparator.class);
-        job.setPartitionerClass(petitioner.class);
+        //job.setPartitionerClass(petitioner.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
         //FileInputFormat.addInputPath(job, new Path(otherArgs[0]));

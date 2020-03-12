@@ -29,9 +29,13 @@ public class commonFriend {
             for(String friend : friends) {
             		pair[0] = data[0];//key
             		pair[1] = friend;
-            		Arrays.sort(pair);
-            		System.out.println("("+pair[0]+", "+pair[1]+")"+data[1]);
-                context.write(new Text("("+pair[0]+", "+pair[1]+")"), new Text(data[1])); // create a pair <user friend, friends>                
+            		//Arrays.sort(pair);
+                    if(Integer.parseInt(pair[0])<Integer.parseInt(pair[1]))
+                        context.write(new Text("("+pair[0]+", "+pair[1]+")"), new Text(data[1])); // create a pair <user friend, friends>
+                    else
+                        context.write(new Text("("+pair[1]+", "+pair[0]+")"), new Text(data[1])); // create a pair <user friend, friends>
+            		//System.out.println("("+pair[0]+", "+pair[1]+")"+data[1]);
+                    //context.write(new Text("("+pair[0]+", "+pair[1]+")"), new Text(data[1])); // create a pair <user friend, friends>
             }	            
         }
     }
@@ -41,7 +45,7 @@ public class commonFriend {
             Set<String> set = new HashSet<>();
             StringBuilder sb = new StringBuilder();
             Iterator<Text> it = values.iterator();
-            System.out.println(key);
+            //System.out.println(key);
             while(it.hasNext()) {
             		String[] friends = it.next().toString().split(",");
             		for(String friend: friends) {
@@ -65,7 +69,7 @@ public class commonFriend {
         File[] listFiles = file.listFiles();
         if(file.isDirectory() == true) {
             for (File f : listFiles) {
-                System.out.println("Deleting " + f.getName());
+                //System.out.println("Deleting " + f.getName());
                 f.delete();
             }
             file.delete();
