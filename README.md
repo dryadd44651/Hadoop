@@ -94,6 +94,6 @@ Here, <User> is a unique integer ID corresponding to a unique user and <Friends>
 </p>
   
 <p>some output data</p>
-<img src="https://github.com/dryadd44651/Hadoop/blob/master/friendBirth.JPG" alt="friendBirth" style="width:5000rem;">
+<img src="https://github.com/dryadd44651/Hadoop/blob/master/friendBirth.JPG" alt="friendBirth" style="width:50vh;">
 <img src="https://github.com/dryadd44651/Hadoop/blob/master/topAgeUser.JPG" alt=topAgeUser" style="width:500rem;">
 
