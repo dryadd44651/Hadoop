@@ -1,8 +1,16 @@
 <h1>MapReduce program in Hadoop</h1>
 
+<p>
+The source code path /src/p1
+/src/example has other sample
+commonFriend.java is library for other program
+</p>
+
 <h2>1.Mutual/Common friend list of two friends</h2>
 
 <p>The key idea is that if two people are friend then they have a lot of mutual/common friends. This program will find the common/mutual friend list for them.
+
+commonFriend1.java
 
 For example,
 Alice’s friends are Bob, Sam, Sara, Nancy
@@ -21,7 +29,11 @@ As Sara and Bob are not friend and so, their mutual friend list is empty. (In th
 <h2>2.Common Friend Number</h2>
 <p>
 using dataset from Q1.
-Find friend pairs whose common friend number are within the top-10 in all the pairs. Please
+
+Find friend pairs whose common friend number are within the top-10 in all the pairs.
+
+topTen.java
+
 output them in decreasing order.
 Output Format:
 <User_A>, <User_B><TAB><Mutual/Common Friend Number>
@@ -32,6 +44,8 @@ use in-memory join
 <p>
 Given any two Users (they are friend) as input, output the list of the names and the date of birth (mm/dd/yyyy) of their mutual friends.
 
+friendBirth.java
+
 Note: use the userdata.txt to get the extra user information.
 Output format:
 UserA id, UserB id, list of [names: date of birth (mm/dd/yyyy)] of their mutual Friends.
@@ -41,12 +55,14 @@ Sample Output:
 
 </p>
 
-<h2>Maximum age of the direct friends</h2>
+<h2>4.Maximum age of the direct friends</h2>
 <p>
 Use reduce-side join and job chaining
 Step 1: Calculate the maximum age of the direct friends of each user.
 Step 2: Sort the users based on the calculated maximum age in descending order as described in step 1.
 Step 3. Output the top 10 users from step 2 with their address and the calculated maximum age.
+
+topAge.java
 
 Sample output.
   

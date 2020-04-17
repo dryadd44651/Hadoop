@@ -68,7 +68,7 @@ public class topTen {
         String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
         // get all args
         if (otherArgs.length != 3) {
-            System.err.println("Usage: TopTen <in> <out>");
+            System.err.println("Usage: TopTen <in> <cf> <out>");
             otherArgs = new String[3];
             otherArgs[0] = "./input/soc-LiveJournal1Adj.txt";
             otherArgs[1] = "./cf/part-r-00000";

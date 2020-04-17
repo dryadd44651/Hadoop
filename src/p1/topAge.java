@@ -155,8 +155,8 @@ public class topAge {
         String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
         clearFolder("topAge");
         clearFolder("topAge_user");
-        if (otherArgs.length != 3) {
-            System.err.println("Usage: avgAge <in> <tmp> <tmp2> <out> <text.file>");
+        if (otherArgs.length != 4) {
+            System.err.println("Usage: topAge <in> <topAge> <input/userdata.txt> <out>");
             otherArgs = new String[5];
             otherArgs[0] = "./input/soc-LiveJournal1Adj.txt";
             otherArgs[1] = "./topAge/";

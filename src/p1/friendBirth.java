@@ -66,7 +66,7 @@ public class friendBirth {
         String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
         // get all args
         if (otherArgs.length != 3) {
-            System.err.println("Usage: stateFriend <in> <tmp> <text.file> <out>");
+            System.err.println("Usage: friendBirth <cf/part-r-00000> <fb> <text.file> <input/userdata.txt>");
             otherArgs = new String[3];
             otherArgs[0] = "./cf/part-r-00000";
             otherArgs[1] = "./fb/";
