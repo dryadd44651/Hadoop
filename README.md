@@ -92,6 +92,8 @@ column10 : date of birth.
 
 Here, <User> is a unique integer ID corresponding to a unique user and <Friends> is a comma-separated list of unique IDs corresponding to the friends of the user with the unique ID <User>. Note that the friendships are mutual (i.e., edges are undirected): if A is friend with B then B is also friend with A. The data provided is consistent with that rule as there is an explicit entry for each side of each edge. So when you make the pair, always consider (A, B) or (B, A) for user A and B but not both.
 </p>
-
-
+  
+<p>some output data</p>
+<img src="https://github.com/dryadd44651/Hadoop/blob/master/friendBirth.JPG" alt="friendBirth" style="width:500rem;">
+<img src="https://github.com/dryadd44651/Hadoop/blob/master/topAgeUser.JPG" alt=topAgeUser" style="width:500rem;">
 
